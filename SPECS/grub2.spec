@@ -104,7 +104,7 @@ Summary:	Support tools for GRUB.
 Group:		System Environment/Base
 Requires:	gettext
 Requires:	%{name}-common = %{evr}
-Obsoletes:	%{name}-tools <= %{flagday}
+Obsoletes:	%{name}-tools-minimal <= %{flagday}
 
 %description tools-minimal
 %{desc}
@@ -117,7 +117,7 @@ Requires:	gettext os-prober which file
 Requires:	%{name}-tools-minimal = %{epoch}:%{version}-%{release}
 Requires:	%{name}-common = %{epoch}:%{version}-%{release}
 Requires:	%{name}-tools = %{evr}
-Obsoletes:	%{name}-tools <= %{flagday}
+Obsoletes:	%{name}-tools-extra <= %{flagday}
 
 %description tools-extra
 %{desc}
@@ -222,10 +222,6 @@ elif [ -f /etc/grub.d/01_users ] && \
 fi
 
 %post tools
-if [ "$1" = 1 ]; then
-	/sbin/install-info --info-dir=%{_infodir} %{_infodir}/%{name}.info.gz || :
-	/sbin/install-info --info-dir=%{_infodir} %{_infodir}/%{name}-dev.info.gz || :
-fi
 
 %triggerun -- grub2 < 1:1.99-4
 # grub2 < 1.99-4 removed a number of essential files in postun. To fix upgrades
@@ -253,10 +249,6 @@ mv -f /boot/grub2.tmp/*.mod \
 rm -r /boot/grub2.tmp/ || :
 
 %preun tools
-if [ "$1" = 0 ]; then
-	/sbin/install-info --delete --info-dir=%{_infodir} %{_infodir}/%{name}.info.gz || :
-	/sbin/install-info --delete --info-dir=%{_infodir} %{_infodir}/%{name}-dev.info.gz || :
-fi
 
 %files
 
