@@ -47,14 +47,11 @@ BuildRequires:  /usr/lib/crt1.o glibc32
 BuildRequires:  /usr/lib/crt1.o glibc-static glibc-devel
 %endif
 %endif
-BuildRequires:  autoconf automake autogen device-mapper-devel
+BuildRequires:  autoconf automake device-mapper-devel
 BuildRequires:	freetype-devel gettext-devel git
 BuildRequires:	texinfo
 BuildRequires:	dejavu-sans-fonts
 BuildRequires:	help2man
-%ifarch %{efi_arch}
-BuildRequires:	pesign >= 0.99-8
-%endif
 %if %{?_with_ccache: 1}%{?!_with_ccache: 0}
 BuildRequires:  ccache
 %endif
@@ -91,7 +88,6 @@ subpackages.
 Summary:	Support tools for GRUB.
 Group:		System Environment/Base
 Obsoletes:	%{name}-tools <= %{flagday}
-Obsoletes:	%{name}-tools-efi <= %{flagday}
 Provides:	%{name}-tools-efi = %{evr}
 Requires:	%{name}-tools-minimal = %{evr}
 Requires:	%{name}-common = %{evr}
@@ -127,12 +123,6 @@ Obsoletes:	%{name}-tools <= %{flagday}
 %{desc}
 This subpackage provides tools for support of all platforms.
 
-%if 0%{with_efi_arch}
-%define_efi_variant %{package_arch} -p
-%endif
-%if 0%{with_alt_efi_arch}
-%define_efi_variant %{alt_package_arch}
-%endif
 %if 0%{with_legacy_arch}
 %define_legacy_variant %{legacy_package_arch}
 %endif
@@ -147,23 +137,11 @@ touch --reference=grub-%{tarversion}/util/grub-setpassword.in.orig \
     grub-%{tarversion}/util/grub-setpassword.in
 rm -f grub-%{tarversion}/util/grub-setpassword.in.orig
 
-%if 0%{with_efi_arch}
-%do_setup %{grubefiarch}
-%endif
-%if 0%{with_alt_efi_arch}
-%do_setup %{grubaltefiarch}
-%endif
 %if 0%{with_legacy_arch}
 %do_setup %{grublegacyarch}
 %endif
 
 %build
-%if 0%{with_efi_arch}
-%do_primary_efi_build %{grubefiarch} %{grubefiname} %{grubeficdname} %{_target_platform} "'%{efi_cflags}'" %{SOURCE3} %{SOURCE3} redhatsecureboot301
-%endif
-%if 0%{with_alt_efi_arch}
-%do_alt_efi_build %{grubaltefiarch} %{grubaltefiname} %{grubalteficdname} %{_alt_target_platform} "'%{alt_efi_cflags}'" %{SOURCE3} %{SOURCE3} redhatsecureboot301
-%endif
 %if 0%{with_legacy_arch}
 %do_legacy_build %{grublegacyarch}
 %endif
@@ -174,12 +152,6 @@ set -e
 rm -fr $RPM_BUILD_ROOT
 
 %do_common_install
-%if 0%{with_efi_arch}
-%do_efi_install %{grubefiarch} %{grubefiname} %{grubeficdname}
-%endif
-%if 0%{with_alt_efi_arch}
-%do_alt_efi_install %{grubaltefiarch} %{grubaltefiname} %{grubalteficdname}
-%endif
 %if 0%{with_legacy_arch}
 %do_legacy_install %{grublegacyarch} %{alt_grub_target_name}
 %endif
@@ -298,12 +270,8 @@ fi
 %exclude %{_datarootdir}/grub/*
 %dir /boot/%{name}
 %dir /boot/%{name}/themes/
-%dir /boot/%{name}/themes/system
-%exclude /boot/%{name}/themes/system/*
 %attr(0700,root,root) %dir /boot/grub2
 %exclude /boot/grub2/*
-%dir %attr(0755,root,root)/boot/efi/EFI/%{efidir}
-%exclude /boot/efi/EFI/%{efidir}/*
 %license %{common_srcdir}/COPYING
 %ghost %config(noreplace) /boot/grub2/grubenv
 %doc %{common_srcdir}/INSTALL
@@ -311,8 +279,6 @@ fi
 %doc %{common_srcdir}/README
 %doc %{common_srcdir}/THANKS
 %doc %{common_srcdir}/TODO
-%doc %{common_srcdir}/docs/grub.html
-%doc %{common_srcdir}/docs/grub-dev.html
 %doc %{common_srcdir}/docs/font_char_metrics.png
 %ifnarch x86_64 %{ix86}
 %exclude %{_bindir}/%{name}-render-label
@@ -340,7 +306,6 @@ fi
 %attr(0644,root,root) %ghost %config(noreplace) %{_sysconfdir}/default/grub
 %config %{_sysconfdir}/grub.d/??_*
 %{_sysconfdir}/grub.d/README
-%{_infodir}/%{name}*
 %{_datarootdir}/grub/*
 %exclude %{_datarootdir}/grub/themes
 %exclude %{_datarootdir}/grub/*.h
@@ -442,12 +407,6 @@ fi
 %{_datadir}/man/man1/%{name}-syslinux2cfg*
 %exclude %{_datarootdir}/grub/themes/starfield
 
-%if 0%{with_efi_arch}
-%define_efi_variant_files %{package_arch} %{grubefiname} %{grubeficdname} %{grubefiarch} %{target_cpu_name} %{grub_target_name}
-%endif
-%if 0%{with_alt_efi_arch}
-%define_efi_variant_files %{alt_package_arch} %{grubaltefiname} %{grubalteficdname} %{grubaltefiarch} %{alt_target_cpu_name} %{alt_grub_target_name}
-%endif
 %if 0%{with_legacy_arch}
 %define_legacy_variant_files %{legacy_package_arch} %{grublegacyarch}
 %endif

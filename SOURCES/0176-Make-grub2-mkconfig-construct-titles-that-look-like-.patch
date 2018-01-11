@@ -29,8 +29,8 @@ index e8088a181..b3c460cb2 100644
 +  title_type=$1 && shift
 +  version=$1 && shift
 +
-+  OS_NAME="$(eval $(grep ^NAME= /etc/os-release) ; echo ${NAME})"
-+  OS_VERS="$(eval $(grep ^VERSION= /etc/os-release) ; echo ${VERSION})"
++  OS_NAME="CentOS Linux"
++  OS_VERS=6
 +
 +  case $title_type in
 +    recovery)
