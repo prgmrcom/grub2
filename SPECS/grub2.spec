@@ -6,7 +6,7 @@
 Name:           grub2
 Epoch:          1
 Version:        2.02
-Release:        0.65%{?dist}%{?buildid}.2
+Release:        0.66%{?dist}%{?buildid}.2
 Summary:        Bootloader with support for Linux, Multiboot and more
 Group:          System Environment/Base
 License:        GPLv3+
@@ -404,6 +404,16 @@ rm -r /boot/grub2.tmp/ || :
 %endif
 
 %changelog
+* Thu Jan 11 2018 Chris Brannon <cmb@prgmr.com> - 2.02-0.66.el6.centos.2
+- Build grub2 for CentOS 6.
+  Note that this package was made solely for the purpose of producing bootable
+  ISOs to launch xen guests under a PVH shim.  It is not guaranteed to
+  be useful in the general case, and it is missing features.
+- Remove EFI builds.
+- Disable generation of info documentation (wouldn't build with makeinfo
+  on CentOS 6.
+- Disable -fstack-protector (it wouldn't link otherwise).
+
 * Thu Oct 19 2017 CentOS Sources <bugs@centos.org> - 2.02-0.65.el7.centos.2
 - Roll in CentOS Secureboot keys
 - Move the edidir to be CentOS, so people can co-install fedora, rhel and centos
