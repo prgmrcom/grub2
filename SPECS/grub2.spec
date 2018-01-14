@@ -6,7 +6,7 @@
 Name:           grub2
 Epoch:          1
 Version:        2.02
-Release:        0.66%{?dist}%{?buildid}.2
+Release:        0.67%{?dist}%{?buildid}.2
 Summary:        Bootloader with support for Linux, Multiboot and more
 Group:          System Environment/Base
 License:        GPLv3+
@@ -91,7 +91,8 @@ Obsoletes:	%{name}-tools <= %{flagday}
 Provides:	%{name}-tools-efi = %{evr}
 Requires:	%{name}-tools-minimal = %{evr}
 Requires:	%{name}-common = %{evr}
-Requires:	gettext os-prober which file
+Requires:	gettext os-prober which file xorriso
+# Introduces a dependency on epel.
 Requires(pre):  dracut
 Requires(post): dracut
 
@@ -404,6 +405,9 @@ rm -r /boot/grub2.tmp/ || :
 %endif
 
 %changelog
+* Sat Jan 13 2018 Chris Brannon <cmb@prgmr.com> - 2.02-0.66.el6.centos.2
+- Require xorriso.  This introduces a dependency on epel.
+
 * Thu Jan 11 2018 Chris Brannon <cmb@prgmr.com> - 2.02-0.66.el6.centos.2
 - Build grub2 for CentOS 6.
   Note that this package was made solely for the purpose of producing bootable
